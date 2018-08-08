@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/gps_device
+    url: jdbc:postgresql://postgresql:5432/gps_device
     username: admin
     password: admin18root
     driver-class-name: org.postgresql.Driver

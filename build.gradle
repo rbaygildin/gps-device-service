@@ -8,6 +8,7 @@ buildscript {
         swaggerCodegenVersion = '2.3.1'
         mapStructVersion = '1.2.0.Final'
         lombokVersion = '1.18.0'
+        mainClassName = "org.rbaygildin.geodevice.GeoDeviceApplication"
     }
     repositories {
         mavenCentral()
@@ -76,3 +77,15 @@ swaggerSources {
 compileJava.dependsOn apiModules.collect { swaggerSources."$it".code }
 sourceSets.main.java.srcDirs apiModules.collect { "${swaggerSources."$it".code.outputDir}/src/main/java" }
 sourceSets.main.resources.srcDirs apiModules.collect { "${swaggerSources."$it".code.outputDir}/src/main/resources" }
+
+
+
+jar {
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
