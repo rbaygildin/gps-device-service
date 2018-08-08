@@ -1,0 +1,14 @@
+version: '2'
+services:
+  postgresql:
+    image: postgres:10.4-alpine
+    environment:
+      POSTGRES_PASSWORD: admin18root
+      POSTGRES_USER: admin
+      POSTGRES_DB: gps_device
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
