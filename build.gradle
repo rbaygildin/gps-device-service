@@ -8,6 +8,7 @@ buildscript {
         swaggerCodegenVersion = '2.3.1'
         mapStructVersion = '1.2.0.Final'
         lombokVersion = '1.18.0'
+        dockerComposePluginVersion = '0.5.0'
         mainClassName = "org.rbaygildin.geodevice.GeoDeviceApplication"
     }
     repositories {
@@ -15,6 +16,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:${dockerComposePluginVersion}"
     }
 }
 
@@ -27,6 +29,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.hidetake.swagger.generator'
+apply plugin: 'docker-compose'
 
 group = 'org.rbaygildin'
 version = '0.0.1'
@@ -89,3 +92,5 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
+composeUp.dependsOn(jar)
