@@ -127,9 +127,11 @@ definitions:
         type: integer
         format: int64
       longtitude:
-        type: string
+        type: number
+        format: double
       latitude:
-        type: string
+        type: number
+        format: double
       radius:
         type: number
         format: double
@@ -140,9 +142,11 @@ definitions:
     type: object
     properties:
       longtitude:
-        type: string
+        type: number
+        format: double
       latitude:
-        type: string
+        type: number
+        format: double
       radius:
         type: number
         format: double
