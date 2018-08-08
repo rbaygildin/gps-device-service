@@ -1,0 +1,151 @@
+swagger: '2.0'
+tags:
+- name: devices
+  description: Devices
+info:
+  version: 0.0.1
+  title: GPS Device API
+  description: GPS Device API
+  termsOfService: terms
+  contact:
+    name: Roman Baygildin
+    url: https://github.com/rbaygildin
+    email: rbaygildin95@gmail.com
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+
+basePath: /
+paths:
+  /device:
+    post:
+      tags:
+      - devices
+      operationId: saveDevice
+      summary: Save new device
+      description: Save new device
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: newDevice
+        schema:
+          $ref: '#/definitions/NewDevice'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/DeviceId'
+
+  /device/{id}:
+    delete:
+      tags:
+      - devices
+      operationId: deleteDeviceById
+      summary: Delete device by id
+      description: Delete device id
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        format: int64
+        required: true
+      responses:
+        204:
+          description: Deleted
+        404:
+          description: Not found
+
+  /gpsdata:
+    post:
+      tags:
+      - devices
+      operationId: saveDevicePosition
+      summary: Save position of device
+      description: Save position of device
+      parameters:
+      - in: body
+        name: gpsData
+        schema:
+          $ref: '#/definitions/NewGpsData'
+        required: true
+      responses:
+        201:
+          description: OK
+        404:
+          description: Not found
+    get:
+      tags:
+      - devices
+      operationId: findDevicePositions
+      summary: Find all positions
+      description: Find all positions
+      parameters:
+      - in: query
+        name: id
+        type: integer
+        format: int64
+      - in: query
+        name: timestart
+        type: string
+        format: date-time
+      - in: query
+        name: timeend
+        type: string
+        format: date-time
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GpsData'
+
+
+definitions:
+  NewDevice:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+  DeviceId:
+    type: object
+    required:
+    - id
+    properties:
+      id:
+        type: integer
+        format: int64
+  NewGpsData:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      longtitude:
+        type: string
+      latitude:
+        type: string
+      radius:
+        type: number
+        format: double
+      time:
+        type: string
+        format: date-time
+  GpsData:
+    type: object
+    properties:
+      longtitude:
+        type: string
+      latitude:
+        type: string
+      radius:
+        type: number
+        format: double
+      time:
+        type: string
+        format: date-time

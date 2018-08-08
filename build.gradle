@@ -1,0 +1,67 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.4.RELEASE'
+        apiModules = [
+                "deviceApi"
+        ]
+        swaggerCoreVersion = '1.5.20'
+        swaggerCodegenVersion = '2.3.1'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'org.hidetake.swagger.generator' version '2.12.0' apply false
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.hidetake.swagger.generator'
+
+group = 'org.rbaygildin'
+version = '0.0.1'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('org.postgresql:postgresql')
+    compileOnly('org.projectlombok:lombok')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    swaggerCodegen "io.swagger:swagger-codegen-cli:${swaggerCodegenVersion}"
+    implementation "io.swagger:swagger-annotations:${swaggerCoreVersion}"
+    implementation "io.swagger:swagger-core:${swaggerCoreVersion}"
+}
+
+swaggerSources {
+    deviceApi {
+        inputFile = file('spec/devices.yaml')
+        code {
+            language = 'spring'
+            components = [models: true, apis: true]
+            additionalProperties = ['modelPackage' : 'org.rbaygildin.dto',
+                                    'apiPackage'   : 'org.rbaygildin.web.controller',
+                                    'interfaceOnly': 'true',
+                                    'dateLibrary'  : 'java8']
+            // Validate YAML before code generation
+            dependsOn validation
+        }
+    }
+}
+
+compileJava.dependsOn apiModules.collect { swaggerSources."$it".code }
+sourceSets.main.java.srcDirs apiModules.collect { "${swaggerSources."$it".code.outputDir}/src/main/java" }
+sourceSets.main.resources.srcDirs apiModules.collect { "${swaggerSources."$it".code.outputDir}/src/main/resources" }
