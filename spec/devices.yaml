@@ -50,7 +50,7 @@ paths:
       - in: path
         name: id
         type: integer
-        format: int64
+        format: int32
         required: true
       responses:
         204:
@@ -86,7 +86,7 @@ paths:
       - in: query
         name: id
         type: integer
-        format: int64
+        format: int32
       - in: query
         name: timestart
         type: string
@@ -119,14 +119,14 @@ definitions:
     properties:
       id:
         type: integer
-        format: int64
+        format: int32
   NewGpsData:
     type: object
     properties:
       id:
         type: integer
-        format: int64
-      longtitude:
+        format: int32
+      longitude:
         type: number
         format: double
       latitude:
@@ -141,7 +141,7 @@ definitions:
   GpsData:
     type: object
     properties:
-      longtitude:
+      longitude:
         type: number
         format: double
       latitude:
