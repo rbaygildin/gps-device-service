@@ -18,6 +18,7 @@ public class GpsDataDao {
 
     public GpsData save(Integer id, GpsData gpsData) {
         Device device = em.find(Device.class, id);
+        gpsData.setDevice(device);
         device.getGpsDataList().add(gpsData);
         em.persist(device);
         return gpsData;
@@ -25,8 +26,6 @@ public class GpsDataDao {
 
     public List<GpsData> findDevicePositions(@Valid Integer id) {
         Device device = em.find(Device.class, id);
-        List<GpsData> gpsDataList = device.getGpsDataList();
-        Hibernate.initialize(gpsDataList);
-        return gpsDataList;
+        return device.getGpsDataList();
     }
 }

@@ -28,8 +28,7 @@ public class DeviceDao {
     }
 
     public void deleteById(Integer id) {
-        em.createQuery("delete from Device d where d.id = ?1")
-                .setParameter(1, id)
-                .executeUpdate();
+        Device device = em.find(Device.class, id);
+        em.detach(device);
     }
 }

@@ -3,6 +3,7 @@ package org.rbaygildin.geodevice.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,11 +16,14 @@ import java.util.List;
 public class Device {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="devices_id_seq",
+            sequenceName="devices_id_seq",
+            allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "devices_id_seq")
     private Integer id;
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "device")
-    private List<GpsData> gpsDataList;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "device")
+    private List<GpsData> gpsDataList = new ArrayList<>();
 }

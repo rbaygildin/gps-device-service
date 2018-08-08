@@ -27,12 +27,6 @@ public class DeviceControllerTest extends BaseControllerTest{
     private static final String NEW_DEVICE_JSON = "classpath:json/newDevice.json";
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private DeviceService service;
 
     @Test

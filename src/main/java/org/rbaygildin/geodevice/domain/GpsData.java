@@ -15,8 +15,10 @@ import java.time.OffsetDateTime;
 public class GpsData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @SequenceGenerator(name = "gps_data_id_seq", sequenceName = "gps_data_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gps_data_id_seq")
+    @Column(name = "id")
+    private Integer gpdDataId;
 
     private Double latitude;
     private Double longitude;
@@ -24,6 +26,6 @@ public class GpsData {
     private OffsetDateTime time;
 
     @OneToOne
-    @JoinColumn(name = "device_id")
+    @JoinColumn(name = "device_id", referencedColumnName = "id", nullable = false)
     private Device device;
 }
